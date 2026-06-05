@@ -73,26 +73,37 @@ function speakWeb(text: string, opts?: SpeakOpts) {
   const synth = (globalThis as any).speechSynthesis as SpeechSynthesis | undefined;
   if (!synth) return;
   synth.cancel();
-  const u = new (globalThis as any).SpeechSynthesisUtterance(text) as SpeechSynthesisUtterance;
-  const id = opts?.voiceId ?? userVoiceId ?? bestVoiceId;
-  const v = id ? webVoices.find(x => x.voiceURI === id) : null;
-  if (v) { u.voice = v; u.lang = v.lang; } else { u.lang = "fil-PH"; }
-  u.rate = opts?.rate ?? 0.95;
-  u.pitch = 1.0;
-  if (opts?.onStart) u.onstart = opts.onStart;
-  u.onend = () => opts?.onDone?.();
-  u.onerror = () => opts?.onDone?.();
-  synth.speak(u);
+  if (synth.paused) synth.resume();
+  setTimeout(() => {
+    const id = opts?.voiceId ?? userVoiceId ?? bestVoiceId;
+    const v = id ? webVoices.find(x => x.voiceURI === id) : null;
+    const u = new (globalThis as any).SpeechSynthesisUtterance(text) as SpeechSynthesisUtterance;
+    if (v) { u.voice = v; u.lang = v.lang; } else { u.lang = "fil-PH"; }
+    u.rate = opts?.rate ?? 0.95;
+    u.pitch = 1.0;
+    if (opts?.onStart) u.onstart = opts.onStart;
+    u.onend = () => opts?.onDone?.();
+    u.onerror = () => opts?.onDone?.();
+    synth.speak(u);
+  }, 50);
 }
 
 function speakNative(text: string, opts?: SpeakOpts) {
+  // Android TTS stop() is async — wait 100ms before speaking to let the engine fully reset.
+  // Without this delay, subsequent presses of Play/Watch again produce no audio.
   Speech.stop();
-  Speech.speak(text, { language: "fil-PH", rate: opts?.rate ?? 0.95, pitch: 1.0, onStart: opts?.onStart, onDone: opts?.onDone, onStopped: opts?.onDone, onError: opts?.onDone });
+  setTimeout(() => {
+    Speech.speak(text, { language: "fil-PH", rate: opts?.rate ?? 0.95, pitch: 1.0, onStart: opts?.onStart, onDone: opts?.onDone, onStopped: opts?.onDone, onError: opts?.onDone });
+  }, 100);
 }
 
 export function stopSpeaking() {
-  if (Platform.OS === "web") (globalThis as any).speechSynthesis?.cancel();
-  else Speech.stop();
+  if (Platform.OS === "web") {
+    const synth = (globalThis as any).speechSynthesis;
+    if (synth) { synth.cancel(); if (synth.paused) synth.resume(); }
+  } else {
+    Speech.stop();
+  }
 }
 
 // STT
