@@ -1,0 +1,19 @@
+appId: com.cborr.filipinotogether
+name: "Tagalog Language Home"
+---
+- launchApp:
+    clearState: false
+- tapOn: "Tagalog"
+- assertVisible: "Learn"
+- assertVisible: "Recall"
+- assertVisible: "Daily Review"
+- assertVisible: "Listen & Choose"
+- assertVisible: "Say It"
+- assertVisible: "Dialog & Question"
+- assertVisible: "Talk Back"
+- assertVisible: "Watch & Decide"
+- takeScreenshot: "tagalog_home_01"
+- scroll
+- takeScreenshot: "tagalog_home_02"
+- tapOn: "← Languages"
+- assertVisible: "Filipino Together"

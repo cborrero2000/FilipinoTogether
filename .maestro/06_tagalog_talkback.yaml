@@ -1,0 +1,17 @@
+appId: com.cborr.filipinotogether
+name: "Tagalog Talk Back"
+---
+- launchApp:
+    clearState: false
+- tapOn: "Tagalog"
+- scroll
+- scroll
+- tapOn: "Talk Back"
+- assertVisible: "Talk Back"
+- assertVisible: "The other person says:"
+- assertVisible: "You could say:"
+- assertVisible: "Hear it again"
+- takeScreenshot: "tagalog_talkback_01"
+- tapOn: "Hear it again"
+- takeScreenshot: "tagalog_talkback_02"
+- tapOn: "Back to menu"

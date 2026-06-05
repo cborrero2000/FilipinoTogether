@@ -1,0 +1,19 @@
+appId: com.cborr.filipinotogether
+name: "Tagalog Listen & Choose"
+---
+- launchApp:
+    clearState: false
+- tapOn: "Tagalog"
+- scroll
+- tapOn: "Listen & Choose"
+- assertVisible: "Listen & Choose"
+- assertVisible: "Play again"
+- assertVisible: "Slower"
+- takeScreenshot: "tagalog_listen_01"
+- tapOn: "Play again"
+- takeScreenshot: "tagalog_listen_02"
+- tapOn:
+    point: "50%,65%"
+- assertVisible: "Next"
+- takeScreenshot: "tagalog_listen_03"
+- tapOn: "Back to menu"

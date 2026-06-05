@@ -1,0 +1,17 @@
+appId: com.cborr.filipinotogether
+name: "Cebuano Listen & Choose"
+---
+- launchApp:
+    clearState: false
+- tapOn: "Visayan"
+- scroll
+- tapOn: "Listen & Choose"
+- assertVisible: "Listen & Choose"
+- assertVisible: "Play again"
+- takeScreenshot: "cebuano_listen_01"
+- tapOn: "Play again"
+- tapOn:
+    point: "50%,65%"
+- assertVisible: "Next"
+- takeScreenshot: "cebuano_listen_02"
+- tapOn: "Back to menu"

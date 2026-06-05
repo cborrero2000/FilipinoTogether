@@ -1,0 +1,10 @@
+appId: com.cborr.filipinotogether
+name: "Tagalog Recall"
+---
+- launchApp:
+    clearState: false
+- tapOn: "Tagalog"
+- tapOn: "Recall"
+- assertVisible: "Recall"
+- takeScreenshot: "tagalog_recall_01"
+- tapOn: "Back to menu"

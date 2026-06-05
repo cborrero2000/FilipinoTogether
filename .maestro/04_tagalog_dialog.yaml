@@ -1,0 +1,20 @@
+appId: com.cborr.filipinotogether
+name: "Tagalog Dialog & Question"
+---
+- launchApp:
+    clearState: false
+- tapOn: "Tagalog"
+- scroll
+- tapOn: "Dialog & Question"
+- assertVisible: "Dialog & Question"
+- takeScreenshot: "tagalog_dialog_01"
+- waitForAnimationToEnd:
+    timeout: 15000
+- assertVisible: "Play the conversation"
+- takeScreenshot: "tagalog_dialog_02"
+- scroll
+- tapOn:
+    point: "50%,50%"
+- assertVisible: "Next"
+- takeScreenshot: "tagalog_dialog_03"
+- tapOn: "Back to menu"

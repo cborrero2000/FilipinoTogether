@@ -1,0 +1,12 @@
+appId: com.cborr.filipinotogether
+name: "Visayan (Cebuano) Language Home"
+---
+- launchApp:
+    clearState: false
+- tapOn: "Visayan"
+- assertVisible: "Learn"
+- assertVisible: "Listen & Choose"
+- assertVisible: "Dialog & Question"
+- takeScreenshot: "cebuano_home_01"
+- tapOn: "← Languages"
+- assertVisible: "Filipino Together"

@@ -1,0 +1,9 @@
+appId: com.cborr.filipinotogether
+name: "Home Screen"
+---
+- launchApp:
+    clearState: false
+- assertVisible: "Filipino Together"
+- assertVisible: "Tagalog"
+- assertVisible: "Visayan"
+- takeScreenshot: "home_01"

@@ -1,0 +1,10 @@
+appId: com.cborr.filipinotogether
+name: "Tagalog Daily Review"
+---
+- launchApp:
+    clearState: false
+- tapOn: "Tagalog"
+- tapOn: "Daily Review"
+- assertVisible: "Daily Review"
+- takeScreenshot: "tagalog_review_01"
+- tapOn: "Back to menu"

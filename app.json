@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Filipino Together",
+    "slug": "filipino-together",
+    "version": "1.0.0",
+    "orientation": "default",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0038A8"
+    },
+    "ios": { "supportsTablet": true },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0038A8"
+      },
+      "package": "com.cborr.filipinotogether"
+    },
+    "web": { "bundler": "metro", "favicon": "./assets/favicon.png" },
+    "plugins": [
+      ["expo-speech-recognition", {
+        "microphonePermission": "Filipino Together uses the microphone to check your speaking.",
+        "speechRecognitionPermission": "Filipino Together uses speech recognition to check what you say.",
+        "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
+      }]
+    ]
+  }
+}

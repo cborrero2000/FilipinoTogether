@@ -1,0 +1,21 @@
+appId: com.cborr.filipinotogether
+name: "Tagalog Watch & Decide"
+---
+- launchApp:
+    clearState: false
+- tapOn: "Tagalog"
+- scroll
+- scroll
+- tapOn: "Watch & Decide"
+- assertVisible: "Watch & Decide"
+- assertVisible: "Play scene"
+- takeScreenshot: "tagalog_scenes_01"
+- tapOn: "Play scene"
+- waitForAnimationToEnd:
+    timeout: 8000
+- scroll
+- tapOn:
+    point: "50%,50%"
+- assertVisible: "Next"
+- takeScreenshot: "tagalog_scenes_02"
+- tapOn: "Back to menu"

@@ -1,0 +1,27 @@
+appId: com.cborr.filipinotogether
+name: "Tagalog Learn"
+---
+- launchApp:
+    clearState: false
+- tapOn: "Tagalog"
+- tapOn: "Learn"
+- assertVisible: "Learn"
+- assertVisible: "👂 Listen"
+- takeScreenshot: "tagalog_learn_listen"
+- tapOn: "Play again"
+- tapOn:
+    point: "50%,70%"
+- assertVisible: "Next"
+- tapOn: "Next"
+- assertVisible: "🎤 Speak"
+- takeScreenshot: "tagalog_learn_speak"
+- tapOn: "Skip to next step"
+- assertVisible: "📖 Read"
+- takeScreenshot: "tagalog_learn_read"
+- tapOn:
+    point: "50%,65%"
+- assertVisible: "Next"
+- tapOn: "Next"
+- assertVisible: "✏️ Build it"
+- takeScreenshot: "tagalog_learn_build"
+- tapOn: "Back to menu"
