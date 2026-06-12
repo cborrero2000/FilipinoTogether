@@ -4,7 +4,7 @@ import { Screen, Card, Body, Button, ChoiceButton, H2, Pill } from "../component
 import { ActivityHeader } from "../components/ActivityHeader";
 import { WordArrange } from "../components/WordArrange";
 import { speak, stopSpeaking, isRecognitionAvailable, startRecognition, RecognitionHandle, matchScore, missingWords } from "../speech/speech";
-import { getPhrases, getDistractors } from "../data/index";
+import { getPhrases, getDistractors, getCompanionPhrase, LANG_LABEL, otherLanguage } from "../data/index";
 import { Phrase } from "../data/types";
 import { markLearned, initProgress } from "../progress/store";
 import { Language } from "../navigation";
@@ -72,7 +72,7 @@ export function LearnScreen({ language, onBack }: { language: Language; onBack: 
         {pills}
         {step === "listen" && <ListenStep phrase={phrase} all={batch} onNext={() => advance()} />}
         {step === "speak"  && <SpeakStep  phrase={phrase} onNext={() => advance()} />}
-        {step === "read"   && <ReadStep   phrase={phrase} all={batch} onNext={() => advance()} />}
+        {step === "read"   && <ReadStep   phrase={phrase} all={batch} language={language} onNext={() => advance()} />}
         {step === "write"  && <WriteStep  phrase={phrase} language={language} onNext={ok => advance(ok)} />}
       </ScrollView>
     </Screen>
@@ -138,9 +138,11 @@ function SpeakStep({ phrase, onNext }: { phrase: Phrase; onNext: () => void }) {
   );
 }
 
-function ReadStep({ phrase, all, onNext }: { phrase: Phrase; all: Phrase[]; onNext: () => void }) {
+function ReadStep({ phrase, all, language, onNext }: { phrase: Phrase; all: Phrase[]; language: Language; onNext: () => void }) {
   const [picked, setPicked] = useState<string | null>(null);
+  const [showCompare, setShowCompare] = useState(false);
   const options = useMemo(() => shuffle([phrase.english, ...shuffle(all.filter(p => p.id !== phrase.id)).slice(0, 2).map(p => p.english)]), [phrase.id]);
+  const companion = getCompanionPhrase(language, phrase.id);
   useEffect(() => { const t = setTimeout(() => speak(phrase.filipino), 200); return () => { clearTimeout(t); stopSpeaking(); }; }, [phrase.id]);
   return (
     <Card style={{ marginTop: md.spacing.md }}>
@@ -148,6 +150,22 @@ function ReadStep({ phrase, all, onNext }: { phrase: Phrase; all: Phrase[]; onNe
       <Text style={styles.target}>{phrase.filipino}</Text>
       {phrase.pronunciation && <Text style={styles.pronunciation}>[{phrase.pronunciation}]</Text>}
       <Button title="Hear it" icon="🔊" variant="neutral" onPress={() => speak(phrase.filipino)} style={{ marginTop: md.spacing.sm }} />
+      {companion && (
+        <Button
+          title={showCompare ? "Hide comparison" : `Compare to ${LANG_LABEL(otherLanguage(language))}`}
+          icon="🔄"
+          variant="ghost"
+          onPress={() => setShowCompare(s => !s)}
+          style={{ marginTop: md.spacing.sm }}
+        />
+      )}
+      {companion && showCompare && (
+        <View style={styles.compareBox}>
+          <Text style={styles.compareLabel}>{LANG_LABEL(otherLanguage(language))}</Text>
+          <Text style={styles.comparePhrase}>{companion.filipino}</Text>
+          {companion.pronunciation && <Text style={styles.pronunciation}>[{companion.pronunciation}]</Text>}
+        </View>
+      )}
       <Body style={{ color: md.colors.onSurfaceVariant, marginTop: md.spacing.md }}>What does this mean in English?</Body>
       <View style={{ marginTop: md.spacing.sm }}>
         {options.map(opt => {
@@ -181,4 +199,7 @@ const styles = StyleSheet.create({
   target: { ...md.typescale.titleLarge, fontWeight: "800", color: md.colors.onSurface, marginTop: md.spacing.sm },
   pronunciation: { ...md.typescale.bodySmall, color: md.colors.onSurfaceVariant, fontStyle: "italic", marginTop: 2 },
   translation: { ...md.typescale.bodyMedium, color: md.colors.onSurfaceVariant, marginTop: 4 },
+  compareBox: { marginTop: md.spacing.sm, padding: md.spacing.md, borderRadius: md.shape.medium, backgroundColor: md.elevation.level2, borderWidth: 1, borderColor: md.colors.outlineVariant },
+  compareLabel: { ...md.typescale.labelSmall, fontWeight: "800", color: md.colors.onSurfaceVariant, letterSpacing: 1 },
+  comparePhrase: { ...md.typescale.titleMedium, fontWeight: "800", color: md.colors.onSurface, marginTop: 2 },
 });

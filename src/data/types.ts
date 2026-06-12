@@ -1,5 +1,5 @@
 export type ListenItem      = { say: string; translation: string; options: string[] };
-export type SpeakItem       = { text: string; translation: string; hint?: string };
+export type SpeakItem       = { text: string; translation: string; hint?: string; pronunciation?: string };
 export type DialogItem      = { title: string; lines: { speaker: string; text: string; translation: string }[]; question: string; options: string[]; answer: number };
 export type TalkStep        = { prompt: string; promptTranslation: string; expect: string; accept: string[] };
 export type TalkConversation = { title: string; steps: TalkStep[] };

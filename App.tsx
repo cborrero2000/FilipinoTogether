@@ -14,7 +14,8 @@ import { SpeakingScreen }     from "./src/screens/SpeakingScreen";
 import { DialogScreen }       from "./src/screens/DialogScreen";
 import { TalkBackScreen }     from "./src/screens/TalkBackScreen";
 import { SceneScreen }        from "./src/screens/SceneScreen";
-import { initSpeech, stopSpeaking } from "./src/speech/speech";
+import { BuildScreen } from "./src/screens/BuildScreen";
+import { initSpeech, stopSpeaking, setSpeechLanguage } from "./src/speech/speech";
 
 export default function App() {
   const [screen, setScreen] = useState<ScreenName>("home");
@@ -24,7 +25,7 @@ export default function App() {
 
   function go(s: ScreenName, lang?: Language) {
     stopSpeaking();
-    if (lang) setLanguage(lang);
+    if (lang) { setLanguage(lang); setSpeechLanguage(lang); }
     setScreen(s);
   }
 
@@ -42,6 +43,7 @@ export default function App() {
         {screen === "review"        && <ReviewScreen    language={language} onBack={backToLangHome} />}
         {screen === "listening"     && <ListeningScreen language={language} onBack={backToLangHome} />}
         {screen === "speaking"      && <SpeakingScreen  language={language} onBack={backToLangHome} />}
+        {screen === "build"         && <BuildScreen     language={language} onBack={backToLangHome} />}
         {screen === "dialog"        && <DialogScreen    language={language} onBack={backToLangHome} />}
         {screen === "talkback"      && <TalkBackScreen  language={language} onBack={backToLangHome} />}
         {screen === "scenes"        && <SceneScreen     language={language} onBack={backToLangHome} />}

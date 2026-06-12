@@ -33,6 +33,32 @@ export async function recordResult(lang: Language, id: string, correct: boolean)
   const box = prev ? (correct ? Math.min(MAX_BOX, prev.box + 1) : Math.max(0, prev.box - 1)) : (correct ? 1 : 0);
   dbs[lang][id] = { id, box, due: now + INTERVALS[Math.max(0, Math.min(MAX_BOX, box))] * DAY, seen: (prev?.seen ?? 0) + 1, correct: (prev?.correct ?? 0) + (correct ? 1 : 0), lastSeen: now };
   await persist(lang);
+  await initStreak();
+  await recordStudyToday();
 }
 export async function markLearned(lang: Language, id: string, correct = true): Promise<void> { await recordResult(lang, id, correct); }
 export async function resetProgress(lang: Language): Promise<void> { dbs[lang] = {}; await persist(lang); }
+
+// Streak — counts consecutive days (across both languages) with at least one study activity.
+const STREAK_KEY = "ft_streak_v1";
+type StreakData = { lastDate: string; streak: number };
+let streak: StreakData = { lastDate: "", streak: 0 };
+let streakLoaded = false;
+
+function todayStr(): string { return new Date().toISOString().slice(0, 10); }
+
+export async function initStreak(): Promise<void> {
+  if (streakLoaded) return;
+  try { const raw = await getItem(STREAK_KEY); streak = raw ? JSON.parse(raw) : { lastDate: "", streak: 0 }; } catch { streak = { lastDate: "", streak: 0 }; }
+  streakLoaded = true;
+}
+
+export function getStreak(): number { return streak.streak; }
+
+export async function recordStudyToday(): Promise<void> {
+  const today = todayStr();
+  if (streak.lastDate === today) return;
+  const yesterday = new Date(Date.now() - DAY).toISOString().slice(0, 10);
+  streak = { lastDate: today, streak: streak.lastDate === yesterday ? streak.streak + 1 : 1 };
+  try { await setItem(STREAK_KEY, JSON.stringify(streak)); } catch {}
+}

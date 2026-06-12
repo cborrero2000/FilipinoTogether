@@ -8,6 +8,7 @@ export type ScreenName =
   | "review"
   | "listening"
   | "speaking"
+  | "build"
   | "dialog"
   | "talkback"
   | "scenes"

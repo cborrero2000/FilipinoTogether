@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Screen, Card, Body, Button, ChoiceButton, H2, Pill } from "../components/UI";
 import { ActivityHeader } from "../components/ActivityHeader";
 import { speak, stopSpeaking } from "../speech/speech";
-import { getPhrases } from "../data/index";
+import { getPhrases, getCompanionPhrase, LANG_LABEL, otherLanguage } from "../data/index";
 import { Phrase } from "../data/types";
 import { initProgress, dueIds, recordResult, learnedCount } from "../progress/store";
 import { Language } from "../navigation";
@@ -76,16 +76,18 @@ export function ReviewScreen({ language, onBack }: { language: Language; onBack:
     <Screen>
       <ActivityHeader title="Daily Review" onBack={onBack} step={qi + 1} total={queue.length} />
       <ScrollView contentContainerStyle={{ paddingBottom: md.spacing.xxxl }}>
-        <ReviewCard phrase={phrase} allPhrases={getPhrases(language)} onResult={handleResult} />
+        <ReviewCard phrase={phrase} allPhrases={getPhrases(language)} language={language} onResult={handleResult} />
       </ScrollView>
     </Screen>
   );
 }
 
-function ReviewCard({ phrase, allPhrases, onResult }: { phrase: Phrase; allPhrases: Phrase[]; onResult: (ok: boolean) => void }) {
+function ReviewCard({ phrase, allPhrases, language, onResult }: { phrase: Phrase; allPhrases: Phrase[]; language: Language; onResult: (ok: boolean) => void }) {
   const [cardState, setCardState] = useState<CardState>("listening");
   const [picked, setPicked] = useState<string | null>(null);
+  const [showCompare, setShowCompare] = useState(false);
   const [options] = useState(() => shuffle([phrase.english, ...shuffle(allPhrases.filter(p => p.id !== phrase.id)).slice(0, 2).map(p => p.english)]));
+  const companion = getCompanionPhrase(language, phrase.id);
 
   useEffect(() => {
     const t = setTimeout(() => speak(phrase.filipino, { onDone: () => setCardState("reveal") }), 300);
@@ -103,6 +105,22 @@ function ReviewCard({ phrase, allPhrases, onResult }: { phrase: Phrase; allPhras
           <Text style={styles.phrase}>{phrase.filipino}</Text>
           {phrase.pronunciation && <Text style={styles.pronunciation}>[{phrase.pronunciation}]</Text>}
           <Button title="Play again" icon="🔊" variant="neutral" onPress={() => speak(phrase.filipino)} style={{ marginTop: md.spacing.sm }} />
+          {companion && (
+            <Button
+              title={showCompare ? "Hide comparison" : `Compare to ${LANG_LABEL(otherLanguage(language))}`}
+              icon="🔄"
+              variant="ghost"
+              onPress={() => setShowCompare(s => !s)}
+              style={{ marginTop: md.spacing.sm }}
+            />
+          )}
+          {companion && showCompare && (
+            <View style={styles.compareBox}>
+              <Text style={styles.compareLabel}>{LANG_LABEL(otherLanguage(language))}</Text>
+              <Text style={styles.comparePhrase}>{companion.filipino}</Text>
+              {companion.pronunciation && <Text style={styles.pronunciation}>[{companion.pronunciation}]</Text>}
+            </View>
+          )}
         </>
       )}
       {cardState === "reveal" && <Button title="I remember — what does it mean?" onPress={() => setCardState("question")} style={{ marginTop: md.spacing.md }} />}
@@ -134,4 +152,7 @@ const styles = StyleSheet.create({
   phrase: { ...md.typescale.titleLarge, fontWeight: "800", color: md.colors.onSurface, marginTop: md.spacing.md },
   pronunciation: { ...md.typescale.bodySmall, color: md.colors.onSurfaceVariant, fontStyle: "italic", marginTop: 2 },
   score: { fontSize: 48, fontWeight: "900", color: md.colors.primary, marginTop: md.spacing.md },
+  compareBox: { marginTop: md.spacing.sm, padding: md.spacing.md, borderRadius: md.shape.medium, backgroundColor: md.elevation.level2, borderWidth: 1, borderColor: md.colors.outlineVariant },
+  compareLabel: { ...md.typescale.labelSmall, fontWeight: "800", color: md.colors.onSurfaceVariant, letterSpacing: 1 },
+  comparePhrase: { ...md.typescale.titleMedium, fontWeight: "800", color: md.colors.onSurface, marginTop: 2 },
 });

@@ -1,4 +1,5 @@
 import { Language } from "../navigation";
+import { Phrase } from "./types";
 import { tagalogListening } from "./tagalog/listening";
 import { tagalogSpeaking } from "./tagalog/speaking";
 import { tagalogDialogs } from "./tagalog/dialogs";
@@ -21,3 +22,16 @@ export const getPhrases   = (lang: Language) => lang === "tagalog" ? tagalogPhra
 export const getDistractors = (lang: Language) => lang === "tagalog" ? tagalogDistractors : cebuanoDistractors;
 
 export const LANG_LABEL = (lang: Language) => lang === "tagalog" ? "Tagalog" : "Visayan (Cebuano)";
+export const otherLanguage = (lang: Language): Language => lang === "tagalog" ? "cebuano" : "tagalog";
+
+/**
+ * The same concept expressed in the other language. tagalogPhrases and cebuanoPhrases
+ * are kept index-aligned (same topics in the same order), so the phrase at the same
+ * position in the other language's array is the natural translation pairing.
+ */
+export function getCompanionPhrase(lang: Language, id: string): Phrase | undefined {
+  const here = getPhrases(lang);
+  const idx = here.findIndex(p => p.id === id);
+  if (idx === -1) return undefined;
+  return getPhrases(otherLanguage(lang))[idx];
+}

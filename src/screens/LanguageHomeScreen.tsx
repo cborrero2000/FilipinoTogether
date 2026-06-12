@@ -18,6 +18,7 @@ const STUDY: TileConfig[] = [
 const PRACTICE: TileConfig[] = [
   { key: "listening", icon: "👂", title: "Listen & Choose",   desc: "Hear a phrase, pick the one you heard." },
   { key: "speaking",  icon: "🎤", title: "Say It",            desc: "Read it out loud and check your speaking." },
+  { key: "build",     icon: "🧩", title: "Build It",          desc: "Tap word tiles to assemble the sentence." },
   { key: "dialog",    icon: "💬", title: "Dialog & Question", desc: "Hear a short talk, then answer a question." },
   { key: "talkback",  icon: "🔁", title: "Talk Back",         desc: "Have a real conversation. Answer out loud." },
   { key: "scenes",    icon: "🎬", title: "Watch & Decide",    desc: "Watch a scene, choose the best reply." },
