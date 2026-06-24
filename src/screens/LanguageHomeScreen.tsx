@@ -53,7 +53,7 @@ export function LanguageHomeScreen({ language, go, onBack }: {
         <View style={styles.header}>
           <Pressable onPress={onBack} accessibilityRole="button" accessibilityLabel="Back to language selection"
             android_ripple={md.ripple()} style={({ pressed }) => [styles.backBtn, pressed && { opacity: 0.7 }]}>
-            <Text style={styles.backText}>← Languages</Text>
+            <Text style={styles.backText}><Text style={styles.backArrow}>◀</Text> Languages</Text>
           </Pressable>
           <View style={[styles.langBadge, { backgroundColor: cfg.color }]}>
             <Text style={styles.langBadgeText}>{cfg.flag} {cfg.name}</Text>
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
   header: { paddingTop: md.spacing.md, paddingBottom: md.spacing.sm, flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: md.spacing.sm },
   backBtn: { paddingVertical: md.spacing.sm, paddingRight: md.spacing.md, paddingLeft: md.spacing.xs, borderRadius: md.shape.full, overflow: "hidden", minHeight: md.touchTarget.minHeight, justifyContent: "center" },
   backText: { ...md.typescale.labelLarge, color: md.colors.onBackground, fontWeight: "700" },
+  backArrow: { fontSize: 20, fontWeight: "800", color: md.colors.primary },
   langBadge: { paddingVertical: md.spacing.sm, paddingHorizontal: md.spacing.lg, borderRadius: md.shape.full, overflow: "hidden" },
   langBadgeText: { ...md.typescale.titleSmall, color: "#FFFFFF", fontWeight: "800" },
   statsRow: { flexDirection: "row", alignItems: "center", backgroundColor: md.elevation.level1, borderRadius: md.shape.large, borderWidth: 1, borderColor: md.colors.outlineVariant, padding: md.spacing.md, marginBottom: md.spacing.md },

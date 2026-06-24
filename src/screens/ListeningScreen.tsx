@@ -47,7 +47,7 @@ export function ListeningScreen({ language, onBack }: { language: Language; onBa
       <ActivityHeader title="Listen & Choose" onBack={onBack} step={i + 1} total={session.length} />
       <ScrollView contentContainerStyle={{ paddingBottom: md.spacing.xxxl }}>
         <Card style={{ marginTop: md.spacing.md }}>
-          <Body style={{ color: md.colors.onSurfaceVariant, textAlign: "center" }}>Listen, then choose the phrase you heard.</Body>
+          <Text style={styles.instruction}>Listen, then choose the phrase you heard.</Text>
           <Text style={styles.translation}>{item.translation}</Text>
           <Button title="Play again" icon="🔊" onPress={() => speak(item.say)} accessibilityLabel="Play the phrase again" style={{ marginTop: md.spacing.md }} />
           <Button title="Slower" icon="🐢" variant="neutral" onPress={() => speak(item.say, { rate: 0.6 })} accessibilityLabel="Play slower" style={{ marginTop: md.spacing.sm }} />
@@ -72,5 +72,19 @@ export function ListeningScreen({ language, onBack }: { language: Language; onBa
 }
 
 const styles = StyleSheet.create({
-  translation: { ...md.typescale.bodyMedium, color: md.colors.onSurfaceVariant, fontStyle: "italic", textAlign: "center", marginTop: md.spacing.xs },
+  instruction: {
+    ...md.typescale.labelLarge,
+    color: md.colors.onSurfaceVariant,
+    fontWeight: "700",
+    textAlign: "center",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  translation: {
+    ...md.typescale.titleLarge,
+    color: md.colors.onSurface,
+    fontWeight: "800",
+    textAlign: "center",
+    marginTop: md.spacing.sm,
+  },
 });
