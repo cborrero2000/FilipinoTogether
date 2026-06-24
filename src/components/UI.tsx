@@ -224,9 +224,9 @@ const styles = StyleSheet.create({
   },
 
   btn: {
-    minHeight: md.touchTarget.minHeight,
+    minHeight: md.touchTarget.minHeight + 8,
     borderRadius: md.shape.full,
-    paddingHorizontal: md.spacing.xl,
+    paddingHorizontal: md.spacing.lg,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
@@ -237,8 +237,8 @@ const styles = StyleSheet.create({
     borderColor: md.colors.outline,
   },
   btnText: {
-    ...md.typescale.labelLarge,
-    fontWeight: "700",
+    ...md.typescale.headlineSmall,
+    fontWeight: "800",
     width: "100%",
     textAlign: "center",
   },
