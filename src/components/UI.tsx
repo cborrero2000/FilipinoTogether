@@ -239,6 +239,8 @@ const styles = StyleSheet.create({
   btnText: {
     ...md.typescale.labelLarge,
     fontWeight: "700",
+    width: "100%",
+    textAlign: "center",
   },
 
   choice: {
