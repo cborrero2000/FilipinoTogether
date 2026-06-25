@@ -95,11 +95,13 @@ export function Button({
     >
       {loading ? (
         <ActivityIndicator color={fg} />
+      ) : icon ? (
+        <View style={styles.btnContent}>
+          <Text style={[styles.btnIcon, { color: fg }]}>{icon}</Text>
+          <Text style={[styles.btnText, { color: fg, width: undefined }]}>{title}</Text>
+        </View>
       ) : (
-        <Text style={[styles.btnText, { color: fg }]}>
-          {icon ? icon + "  " : ""}
-          {title}
-        </Text>
+        <Text style={[styles.btnText, { color: fg }]}>{title}</Text>
       )}
     </Pressable>
   );
@@ -241,6 +243,17 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     width: "100%",
     textAlign: "center",
+  },
+  btnContent: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btnIcon: {
+    fontSize: 36,
+    lineHeight: 40,
+    marginRight: md.spacing.sm,
   },
 
   choice: {
